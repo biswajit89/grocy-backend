@@ -11,6 +11,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,12 +34,18 @@ public class UserController {
     
     @Autowired
     private UserRepository userepository;
-    
-    @PostMapping("/add")
-    private ApiResponse addUser(@RequestBody User user, HttpServletRequest request) {
-        userepository.save(user);
   
-        return new ApiResponse(true, "User added Successfully", user);
+    @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
+    private ResponseEntity<?> addUser(@RequestBody User user) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        try {
+            userepository.save(user);
+            ApiResponse response = new ApiResponse(true, "user added", user);
+            return new ResponseEntity<>(response, headers, HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<>("Error", headers, HttpStatus.BAD_REQUEST);
+        }
         
     }
     

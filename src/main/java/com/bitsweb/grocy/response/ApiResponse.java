@@ -18,6 +18,28 @@ public class ApiResponse {
         this.message = message;
         this.response = response;
     }
-    
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Object getResponse() {
+        return response;
+    }
+
+    public void setResponse(Object response) {
+        this.response = response;
+    }
     
 }
