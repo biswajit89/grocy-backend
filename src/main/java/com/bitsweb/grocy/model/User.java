@@ -4,12 +4,16 @@
  */
 package com.bitsweb.grocy.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -21,12 +25,26 @@ public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
+    
+    @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private String name;
+    
+    @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private String email;
+    
+    @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private String password;
-    private Integer status;
-    private LocalDate createdate;
-    private LocalDate updatedate;
+    
+    @Column(nullable = false, columnDefinition = "int default 1")
+    private int status = 1; // Default value for status
+    
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime  createdate = LocalDateTime.now();
+    
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime updatedate = LocalDateTime.now();
 
     public Integer getId() {
         return id;
@@ -68,19 +86,19 @@ public class User {
         this.status = status;
     }
 
-    public LocalDate getCreatedate() {
+    public LocalDateTime getCreatedate() {
         return createdate;
     }
 
-    public void setCreatedate(LocalDate createdate) {
+    public void setCreatedate(LocalDateTime createdate) {
         this.createdate = createdate;
     }
 
-    public LocalDate getUpdatedate() {
+    public LocalDateTime getUpdatedate() {
         return updatedate;
     }
 
-    public void setUpdatedate(LocalDate updatedate) {
+    public void setUpdatedate(LocalDateTime updatedate) {
         this.updatedate = updatedate;
     }
 

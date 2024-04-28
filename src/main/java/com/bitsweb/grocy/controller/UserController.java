@@ -44,10 +44,12 @@ public class UserController {
             ApiResponse response = new ApiResponse(true, "user added", user);
             return new ResponseEntity<>(response, headers, HttpStatus.OK);
         } catch(Exception e) {
+            System.out.println(e);
             return new ResponseEntity<>("Error", headers, HttpStatus.BAD_REQUEST);
         }
         
     }
+    
     
     @GetMapping("/getall")
     private List<User> getUser() {
