@@ -7,6 +7,7 @@ package com.bitsweb.grocy.controller;
 import com.bitsweb.grocy.model.User;
 import com.bitsweb.grocy.model.UserRepository;
 import com.bitsweb.grocy.response.ApiResponse;
+import com.bitsweb.grocy.utils.EncryptDecrypt;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +41,7 @@ public class UserController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         try {
+            user.setPassword(EncryptDecrypt.encrypt(user.getPassword()));
             userepository.save(user);
             ApiResponse response = new ApiResponse(true, "user added", user);
             return new ResponseEntity<>(response, headers, HttpStatus.OK);
