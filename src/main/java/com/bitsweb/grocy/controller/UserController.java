@@ -63,9 +63,10 @@ public class UserController {
         return userepository.findById(id);
     }
     
-    @GetMapping("/getuserbyname/{name}")
-    private List<User> getUserByName(@PathVariable("name") String name) {
-        return userepository.findByName(name);
+    @GetMapping("/getuserbyname/{username}")
+    private List<User> getUserByName(@PathVariable("username") String username) {
+        return null;
     }
     
 }
+ 

@@ -6,6 +6,7 @@ package com.bitsweb.grocy.model;
 
 import com.bitsweb.grocy.model.User;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.yaml.snakeyaml.events.Event.ID;
 
@@ -14,5 +15,6 @@ import org.yaml.snakeyaml.events.Event.ID;
  * @author Biswajit
  */
 public interface UserRepository extends JpaRepository<User, Integer> {
-    public List<User> findByName(String name);
+    //List<User> findByName(String username);
+    Optional<User> findByUsername(String username);
 }

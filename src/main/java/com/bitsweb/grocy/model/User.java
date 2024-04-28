@@ -6,6 +6,8 @@ package com.bitsweb.grocy.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,6 +16,11 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *
@@ -21,15 +28,15 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name="gr_user")
-public class User {
+public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
     
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")
-    private String name;
+    private String username;
     
-    @Column(nullable = false, columnDefinition = "VARCHAR(255)")
+    @Column(nullable = false,unique = true, columnDefinition = "VARCHAR(255)")
     private String email;
     
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")
@@ -46,6 +53,9 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updatedate = LocalDateTime.now();
 
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
+    
     public Integer getId() {
         return id;
     }
@@ -54,12 +64,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
-
-    public void setName(String name) {
-        this.name = name;
+   
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -101,10 +111,44 @@ public class User {
     public void setUpdatedate(LocalDateTime updatedate) {
         this.updatedate = updatedate;
     }
+    
+    public Role getRole() {
+        return role;
+    }
 
+    public void setRole(Role role) {
+        this.role = role;
+    }
+    
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", status=" + status + ", createdate=" + createdate + ", updatedate=" + updatedate + '}';
+        return "User{" + "id=" + id + ", username=" + username + ", email=" + email + ", password=" + password + ", status=" + status + ", createdate=" + createdate + ", updatedate=" + updatedate + '}';
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+
+    @Override
+    public boolean isAccountNonExpired() {
+       return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+      return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
     
 }
